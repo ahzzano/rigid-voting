@@ -27,12 +27,11 @@ export async function createSession(token: string, userId: number): Promise<Sess
 
 export async function validateSessionToken(token: string): Promise<SessionValidationResult> {
     // TODO
-    const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
     const result = await db
         .select({ user: users, session: sessions })
         .from(sessions)
         .innerJoin(users, eq(sessions.userId, users.id))
-        .where(eq(sessions.id, sessionId));
+        .where(eq(sessions.id, token));
 
     if (result.length < 1) {
         return { session: null, user: null }

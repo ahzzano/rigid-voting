@@ -5,6 +5,19 @@ import { UserSchema } from "$lib/zodSchemas";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import { eq, and } from "drizzle-orm/pg-core/expressions";
 
+export const load = async ({ cookies }) => {
+    const token = cookies.get("sessionToken")
+    if (token == undefined) {
+        return
+    }
+    const sess = await validateSessionToken(token)
+
+    console.log(sess)
+    if (sess.session != null) {
+        redirect(303, '/app')
+    }
+
+}
 export const actions = {
     default: async ({ request, cookies }) => {
         const formData = await request.formData()
