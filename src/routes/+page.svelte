@@ -9,5 +9,7 @@
     <ul>
         <li>Svelte</li>
         <li>TailwindCSS</li>
+        <li>Zod</li>
+        <li>Drizzle</li>
     </ul>
 </div>
