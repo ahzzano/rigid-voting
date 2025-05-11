@@ -4,6 +4,7 @@
     let { form } = $props();
 </script>
 
+Register
 <form method="POST" use:enhance>
     {#if form?.issues}
         {#each form.issues as issue}
