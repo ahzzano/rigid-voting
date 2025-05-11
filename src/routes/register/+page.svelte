@@ -1,10 +1,15 @@
 <script lang="ts">
-    import { z } from "zod";
-    import { UserSchema } from "$lib/zodSchemas";
     import { enhance } from "$app/forms"; // Import the enhance action
+
+    let { form } = $props();
 </script>
 
 <form method="POST" use:enhance>
+    {#if form?.issues}
+        {#each form.issues as issue}
+            {issue.message}
+        {/each}
+    {/if}
     <label>
         Email
         <input class="input" name="email" required />

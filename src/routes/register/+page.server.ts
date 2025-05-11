@@ -11,15 +11,13 @@ export const actions = {
             password: String(formData.get('password'))
         }
 
-        // const safeParse = UserSchema.safeParse(user)
-        //
-        // if (!safeParse.success) {
-        //     console.log(safeParse)
-        //     return fail(400, { issues: safeParse.error.issues })
-        // }
-        //
+        const safeParse = UserSchema.safeParse(user)
 
-        // redirect(303, '/')
+        if (!safeParse.success) {
+            console.log(safeParse)
+            return fail(422, { issues: safeParse.error.issues })
+        }
+
         try {
             await db.insert(users).values(user)
         }
@@ -28,6 +26,5 @@ export const actions = {
             console.log(e)
         }
         return { success: true }
-
     }
 } satisfies Actions
