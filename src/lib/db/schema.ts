@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 import type { InferSelectModel } from "drizzle-orm";
 
 
@@ -9,8 +9,8 @@ export const users = pgTable('users', {
 })
 
 export const sessions = pgTable('sessions', {
-    id: text('id').notNull().primaryKey(),
-    userId: serial('user_id').notNull().references(() => users.id),
+    id: serial('id').notNull().primaryKey(),
+    userId: integer('user_id').notNull().references(() => users.id),
     expiresAt: timestamp('expires_at', {
         mode: "date",
         withTimezone: true
