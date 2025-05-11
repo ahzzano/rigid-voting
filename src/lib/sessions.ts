@@ -6,10 +6,6 @@ import { encodeBase32LowerCase, encodeHexLowerCase } from "@oslojs/encoding";
 import { users, type User } from "./db/schema";
 import { eq } from "drizzle-orm/pg-core/expressions";
 
-function encodeToken(token: number, userId: number) {
-
-}
-
 export function generateSessionToken(): string {
     const bytes = new Uint8Array(20)
     crypto.getRandomValues(bytes)
@@ -49,7 +45,7 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 }
 
 export async function invalidateSession(sessionId: string): Promise<void> {
-    await db.delte(sessions).where(eq(sessions.id, sessionId))
+    await db.delete(sessions).where(eq(sessions.id, sessionId))
 }
 
 export async function invalidateAllSessions(userId: number): Promise<void> {

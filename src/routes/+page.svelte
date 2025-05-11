@@ -7,6 +7,9 @@
     documentation
 </p>
 
+<a href="/login">Login</a>
+<a href="/register">Signup</a>
+
 <div>
     Currently Installed:
     <ul>
