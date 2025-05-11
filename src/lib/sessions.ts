@@ -1,5 +1,5 @@
-import { type Session, sessions } from "..//db/schema";
-import { db } from "../db/database";
+import { type Session, sessions } from "./db/schema";
+import { db } from "./db/database";
 
 import { sha256 } from "@oslojs/crypto/sha2";
 import { encodeBase32LowerCase, encodeHexLowerCase } from "@oslojs/encoding";
@@ -46,8 +46,6 @@ export async function validateSessionToken(token: string): Promise<SessionValida
     // TODO: add expiration checks
 
     return { session, user }
-
-
 }
 
 export async function invalidateSession(sessionId: string): Promise<void> {
