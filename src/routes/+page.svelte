@@ -11,5 +11,6 @@
         <li>TailwindCSS</li>
         <li>Zod</li>
         <li>Drizzle</li>
+        <li>DaisyUi</li>
     </ul>
 </div>
