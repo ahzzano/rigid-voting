@@ -5,6 +5,7 @@ import { sha256 } from "@oslojs/crypto/sha2";
 import { encodeBase32LowerCase, encodeHexLowerCase } from "@oslojs/encoding";
 import { users, type User } from "./db/schema";
 import { eq } from "drizzle-orm/pg-core/expressions";
+import type { Cookies } from "@sveltejs/kit";
 
 export function generateSessionToken(): string {
     const bytes = new Uint8Array(20)
@@ -58,3 +59,12 @@ export async function invalidateAllSessions(userId: number): Promise<void> {
 export type SessionValidationResult =
     | { session: Session; user: User }
     | { session: null; user: null };
+
+export async function setSessionToken(cookies: Cookies, session: Session) {
+    cookies.set("sessionToken", session.id, {
+        httpOnly: true,
+        sameSite: "lax",
+        expires: session.expiresAt,
+        path: "/"
+    })
+}

@@ -1,6 +1,7 @@
 import { db } from "$lib/db/database";
 import { sessions, users } from "$lib/db/schema";
-import { createSession, generateSessionToken, validateSessionToken } from "$lib/sessions";
+import { createSession, generateSessionToken, setSessionToken, validateSessionToken } from "$lib/sessions";
+import { setUserData } from "$lib/userData";
 import { UserSchema } from "$lib/zodSchemas";
 import { sha256 } from "@oslojs/crypto/sha2";
 import { encodeHexLowerCase } from "@oslojs/encoding";
@@ -14,7 +15,6 @@ export const load = async ({ cookies }) => {
     }
     const sess = await validateSessionToken(token)
 
-    console.log(sess)
     if (sess.session != null) {
         redirect(303, '/app')
     }
@@ -55,37 +55,33 @@ export const actions = {
                 eq(sessions.userId, userData.id)
             )
 
-        console.log(session)
         if (session.length == 0) {
             const token = generateSessionToken()
             const session = await createSession(token, userData.id)
-            cookies.set("sessionToken", session.id, {
-                httpOnly: true,
-                sameSite: "lax",
-                expires: session.expiresAt,
-                path: "/"
-            })
+            setSessionToken(cookies, session)
+
+            const { user } = await validateSessionToken(token)
+            setUserData(cookies, user)
+
         } else {
             const isValidSession = await validateSessionToken(session[0].session.id)
             if (isValidSession.session == null) {
                 const token = generateSessionToken()
                 const session = await createSession(token, userData.id)
-                cookies.set("sessionToken", session.id, {
-                    httpOnly: true,
-                    sameSite: "lax",
-                    expires: session.expiresAt,
-                    path: "/"
-                })
+                setSessionToken(cookies, session)
+                const { user } = await validateSessionToken(token)
+                console.log(user)
+                if (user) {
+                    setUserData(cookies, user)
+                }
+
             }
             else {
                 const validSession = isValidSession.session
-                cookies.set("sessionToken", validSession.id, {
-                    httpOnly: true,
-                    sameSite: "lax",
-                    expires: validSession.expiresAt,
-                    path: "/"
-                })
+                setSessionToken(cookies, validSession)
+                setUserData(cookies, isValidSession.user)
             }
+
         }
 
         redirect(303, '/app')
