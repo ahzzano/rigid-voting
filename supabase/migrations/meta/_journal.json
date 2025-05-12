@@ -15,6 +15,13 @@
       "when": 1746971325214,
       "tag": "0001_flat_forgotten_one",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1747019727835,
+      "tag": "0002_elite_korath",
+      "breakpoints": true
     }
   ]
 }

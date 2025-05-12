@@ -1,4 +1,4 @@
-import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 import type { InferSelectModel } from "drizzle-orm";
 
 
@@ -30,5 +30,17 @@ export const userInfo = pgTable('userInfo', {
     lastName: text('lastName')
 })
 
+export const poll = pgTable('polls', {
+    id: serial('poll_id')
+        .primaryKey(),
+    owner: serial('owner_id')
+        .references(() => users.id)
+        .notNull(),
+    pollname: text('poll_name').notNull(),
+    open: boolean('open')
+        .default(true)
+})
+
 export type User = InferSelectModel<typeof users>;
 export type Session = InferSelectModel<typeof sessions>
+export type Poll = InferSelectModel<typeof poll>
