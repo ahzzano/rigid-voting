@@ -2,6 +2,8 @@ import { db } from "$lib/db/database";
 import { sessions, users } from "$lib/db/schema";
 import { createSession, generateSessionToken, validateSessionToken } from "$lib/sessions";
 import { UserSchema } from "$lib/zodSchemas";
+import { sha256 } from "@oslojs/crypto/sha2";
+import { encodeHexLowerCase } from "@oslojs/encoding";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import { eq, and } from "drizzle-orm/pg-core/expressions";
 
@@ -25,6 +27,10 @@ export const actions = {
             email: String(formData.get('email')),
             password: String(formData.get('password'))
         }
+
+        const passwordHash = sha256(new TextEncoder().encode(user.password))
+        const hexHash = encodeHexLowerCase(passwordHash)
+        user.password = hexHash
 
         const result = await db
             .select({ user: users })

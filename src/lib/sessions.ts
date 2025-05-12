@@ -39,6 +39,9 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 
     const { user, session } = result[0]
     // TODO: add expiration checks
+    if (session.expiresAt.getDate() <= Date.now()) {
+        return { session: null, user: null }
+    }
 
     return { session, user }
 }
@@ -49,6 +52,7 @@ export async function invalidateSession(sessionId: string): Promise<void> {
 
 export async function invalidateAllSessions(userId: number): Promise<void> {
     // TODO
+    await db.delete(sessions).where(eq(sessions.userId, userId))
 }
 
 export type SessionValidationResult =
