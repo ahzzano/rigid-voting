@@ -13,10 +13,10 @@ export const load = async ({ cookies }) => {
     if (token == undefined) {
         return
     }
-    const sess = await validateSessionToken(token)
+    const { session } = await validateSessionToken(token)
 
-    if (sess.session != null) {
-        redirect(303, '/app')
+    if (session != null) {
+        return redirect(303, '/app')
     }
 
 }
@@ -58,10 +58,12 @@ export const actions = {
         if (session.length == 0) {
             const token = generateSessionToken()
             const session = await createSession(token, userData.id)
-            setSessionToken(cookies, session)
 
             const { user } = await validateSessionToken(token)
-            setUserData(cookies, user)
+            if (user) {
+                setSessionToken(cookies, session)
+                setUserData(cookies, user)
+            }
 
         } else {
             const isValidSession = await validateSessionToken(session[0].session.id)
@@ -69,19 +71,17 @@ export const actions = {
                 const token = generateSessionToken()
                 const session = await createSession(token, userData.id)
                 setSessionToken(cookies, session)
-                const { user } = await validateSessionToken(token)
-                console.log(user)
-                if (user) {
-                    setUserData(cookies, user)
-                }
 
             }
             else {
-                const validSession = isValidSession.session
-                setSessionToken(cookies, validSession)
-                setUserData(cookies, isValidSession.user)
+                const { session } = isValidSession
+                setSessionToken(cookies, session)
             }
 
+            const { user } = await validateSessionToken(session[0].session.id)
+            if (user) {
+                setUserData(cookies, user)
+            }
         }
 
         redirect(303, '/app')

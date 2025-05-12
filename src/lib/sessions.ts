@@ -39,8 +39,11 @@ export async function validateSessionToken(token: string): Promise<SessionValida
     }
 
     const { user, session } = result[0]
-    // TODO: add expiration checks
-    if (session.expiresAt.getDate() <= Date.now()) {
+
+    const now = new Date()
+    if (session.expiresAt < now) {
+        invalidateSession(session.id)
+
         return { session: null, user: null }
     }
 
@@ -56,10 +59,6 @@ export async function invalidateAllSessions(userId: number): Promise<void> {
     await db.delete(sessions).where(eq(sessions.userId, userId))
 }
 
-export type SessionValidationResult =
-    | { session: Session; user: User }
-    | { session: null; user: null };
-
 export async function setSessionToken(cookies: Cookies, session: Session) {
     cookies.set("sessionToken", session.id, {
         httpOnly: true,
@@ -68,3 +67,8 @@ export async function setSessionToken(cookies: Cookies, session: Session) {
         path: "/"
     })
 }
+
+export type SessionValidationResult =
+    | { session: Session; user: User }
+    | { session: null; user: null };
+
