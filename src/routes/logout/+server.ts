@@ -1,9 +1,8 @@
-import { invalidateAllSessions, invalidateSession } from "$lib/sessions"
+import { invalidateSession } from "$lib/sessions"
 import { redirect } from "@sveltejs/kit"
 
 export async function GET({ cookies }) {
     invalidateSession(cookies.get("sessionToken"))
-    console.log(cookies)
 
     cookies.set("sessionToken", "", {
         httpOnly: true,
