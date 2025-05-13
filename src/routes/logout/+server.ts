@@ -14,6 +14,5 @@ export async function GET({ cookies }) {
 
     removeUserData(cookies)
 
-
     throw redirect(302, '/')
 }
