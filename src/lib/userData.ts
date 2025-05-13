@@ -9,7 +9,7 @@ export async function setUserData(cookies: Cookies, user: User) {
     })
 }
 
-export function readUserData(cookies: Cookies) {
+export function readUserData(cookies: Cookies): User | null {
     const data = cookies.get('user')
     if (data) {
         return JSON.parse(data)
