@@ -1,4 +1,5 @@
-import type { User } from "$lib/db/schema";
+import { db } from "$lib/db/database";
+import { userInfos, type User } from "$lib/db/schema";
 import { readUserData } from "$lib/userData";
 import { getUserInfo } from "$lib/users";
 import type { Actions } from "@sveltejs/kit";
@@ -20,7 +21,21 @@ export async function load({ cookies }) {
 
 export const actions = {
     insert: async ({ request, cookies }) => {
-        console.log("AA")
+        const formData = await request.formData()
+
+        const user = readUserData(cookies)
+        if (user == null) {
+            return null
+        }
+
+        const data = {
+            firstName: String(formData.get('firstName')),
+            lastName: String(formData.get('lastName')),
+            userId: user.id
+        }
+
+
+        await db.insert(userInfos).values(data)
     },
     update: async ({ request, cookies }) => {
 
