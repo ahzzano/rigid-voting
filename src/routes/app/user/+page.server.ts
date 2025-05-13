@@ -3,6 +3,7 @@ import { userInfos, type User } from "$lib/db/schema";
 import { readUserData } from "$lib/userData";
 import { getUserInfo } from "$lib/users";
 import type { Actions } from "@sveltejs/kit";
+import { eq } from "drizzle-orm/pg-core/expressions";
 
 export async function load({ cookies }) {
     const userData: User = readUserData(cookies)
@@ -38,7 +39,21 @@ export const actions = {
         await db.insert(userInfos).values(data)
     },
     update: async ({ request, cookies }) => {
+        const formData = await request.formData()
 
+        const user = readUserData(cookies)
+        if (user == null) {
+            return null
+        }
+
+        const data = {
+            firstName: String(formData.get('firstName')),
+            lastName: String(formData.get('lastName')),
+        }
+
+        await db.update(userInfos)
+            .set(data)
+            .where(eq(userInfos.userId, user.id))
     }
 
 } satisfies Actions
