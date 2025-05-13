@@ -37,7 +37,12 @@ export const polls = pgTable('polls', {
         .notNull(),
     pollname: text('poll_name').notNull(),
     open: boolean('open')
-        .default(true)
+        .default(true),
+    created_at: timestamp('created_at',
+        {
+            mode: "date",
+            withTimezone: true
+        }).defaultNow()
 })
 
 export const questions = pgTable('questions', {

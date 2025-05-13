@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm/pg-core/expressions";
 
 export async function load({ cookies }) {
     const userData = readUserData(cookies)
+
     if (!userData) {
         return fail(300)
     }
@@ -14,7 +15,6 @@ export async function load({ cookies }) {
         .select()
         .from(polls)
         .where(eq(polls.owner, userData.id));
-
 
     return {
         polls: userPolls

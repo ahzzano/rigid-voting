@@ -4,7 +4,6 @@
     let { data }: PageProps = $props();
 
     let polls = data.polls;
-    console.log(polls);
 </script>
 
 <a href="/app/user">User Settings</a>
@@ -19,10 +18,11 @@
     </form>
 </div>
 
+<!-- TODO: Add Poll Button Links -->
 <div>
     {#each polls as poll}
-        <div>
+        <a href="/app/{poll.id}">
             {poll.pollname}
-        </div>
+        </a>
     {/each}
 </div>
