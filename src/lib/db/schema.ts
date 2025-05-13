@@ -1,7 +1,6 @@
 import { boolean, integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 import type { InferSelectModel } from "drizzle-orm";
 
-
 export const users = pgTable('users', {
     id: serial('id')
         .primaryKey(),
@@ -20,7 +19,7 @@ export const sessions = pgTable('sessions', {
     }).notNull()
 })
 
-export const userInfo = pgTable('userInfo', {
+export const userInfos = pgTable('userInfo', {
     userId: serial('user_id')
         .primaryKey()
         .references(() =>
@@ -30,7 +29,7 @@ export const userInfo = pgTable('userInfo', {
     lastName: text('lastName')
 })
 
-export const poll = pgTable('polls', {
+export const polls = pgTable('polls', {
     id: serial('poll_id')
         .primaryKey(),
     owner: serial('owner_id')
@@ -43,4 +42,5 @@ export const poll = pgTable('polls', {
 
 export type User = InferSelectModel<typeof users>;
 export type Session = InferSelectModel<typeof sessions>
-export type Poll = InferSelectModel<typeof poll>
+export type Poll = InferSelectModel<typeof polls>
+export type UserInfo = InferSelectModel<typeof userInfos>
