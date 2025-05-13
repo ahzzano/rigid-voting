@@ -21,6 +21,15 @@ export async function load({ cookies }) {
 }
 
 export const actions = {
+    delete: async ({ request, cookies }) => {
+        const user = readUserData(cookies)
+        if (user == null) {
+            return null
+        }
+
+        await db.delete(userInfos).where(eq(userInfos.userId, user.id))
+
+    },
     insert: async ({ request, cookies }) => {
         const formData = await request.formData()
 
