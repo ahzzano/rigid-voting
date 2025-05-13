@@ -50,11 +50,16 @@ export const questions = pgTable('questions', {
     poll: serial('poll_id')
         .references(() => polls.id)
         .notNull(),
-    question: text('question_text')
+    question: text('question_text'),
+    order: integer('order').notNull().default(0)
 })
 
+export const choices = pgTable('choices', {
+
+})
+
+export type Question = InferSelectModel<typeof questions>
 export type User = InferSelectModel<typeof users>;
 export type Session = InferSelectModel<typeof sessions>
 export type Poll = InferSelectModel<typeof polls>
 export type UserInfo = InferSelectModel<typeof userInfos>
-export type Question = InferSelectModel<typeof questions>

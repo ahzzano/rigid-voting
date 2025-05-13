@@ -19,7 +19,7 @@
 </div>
 
 <!-- TODO: Add Poll Button Links -->
-<div>
+<div class="flex flex-col">
     {#each polls as poll}
         <a href="/app/{poll.id}">
             {poll.pollname}
