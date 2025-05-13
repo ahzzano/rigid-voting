@@ -1,7 +1,9 @@
 <script lang="ts">
     import type { PageProps } from "../$types";
 
-    let { polls }: PageProps = $props();
+    let { data }: PageProps = $props();
+
+    let polls = data.polls;
     console.log(polls);
 </script>
 
@@ -15,4 +17,12 @@
         <input name="pollName" class="input" />
         <button class="btn">Add</button>
     </form>
+</div>
+
+<div>
+    {#each polls as poll}
+        <div>
+            {poll.pollname}
+        </div>
+    {/each}
 </div>
