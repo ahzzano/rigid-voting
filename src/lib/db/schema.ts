@@ -37,7 +37,12 @@ export const polls = pgTable('polls', {
         .notNull(),
     pollname: text('poll_name').notNull(),
     open: boolean('open')
-        .default(true)
+        .default(true),
+    created_at: timestamp('created_at',
+        {
+            mode: "date",
+            withTimezone: true
+        }).defaultNow()
 })
 
 export const questions = pgTable('questions', {
@@ -45,11 +50,21 @@ export const questions = pgTable('questions', {
     poll: serial('poll_id')
         .references(() => polls.id)
         .notNull(),
-    question: text('question_text')
+    question: text('question_text'),
+    order: integer('order').notNull().default(0)
 })
 
+export const choices = pgTable('choices', {
+    id: serial('id').primaryKey(),
+    question: serial('question_id')
+        .references(() => questions.id),
+    content: text('content').notNull(),
+    count: integer().default(0)
+})
+
+export type Question = InferSelectModel<typeof questions>
 export type User = InferSelectModel<typeof users>;
 export type Session = InferSelectModel<typeof sessions>
 export type Poll = InferSelectModel<typeof polls>
 export type UserInfo = InferSelectModel<typeof userInfos>
-export type Question = InferSelectModel<typeof questions>
+export type Choice = InferSelectModel<typeof choices>

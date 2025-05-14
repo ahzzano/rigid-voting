@@ -5,8 +5,8 @@ import { fail, redirect, type Actions } from "@sveltejs/kit";
 import { eq } from "drizzle-orm/pg-core/expressions";
 
 export async function load({ cookies }) {
-
     const userData = readUserData(cookies)
+
     if (!userData) {
         return fail(300)
     }
@@ -14,7 +14,7 @@ export async function load({ cookies }) {
     const userPolls = await db
         .select()
         .from(polls)
-        .where(eq(polls.owner, userData.id))
+        .where(eq(polls.owner, userData.id));
 
     return {
         polls: userPolls
