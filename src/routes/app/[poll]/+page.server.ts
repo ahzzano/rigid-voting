@@ -103,5 +103,4 @@ export const actions = {
         redirect(303, `/app/${poll}`)
     }
 
-
 } satisfies Actions

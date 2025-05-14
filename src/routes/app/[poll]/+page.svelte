@@ -15,6 +15,7 @@
                 order: number;
                 choices: {
                     content: string;
+                    count: number;
                 }[];
             }[];
         };
@@ -48,6 +49,7 @@
         {#each question.choices as choice}
             <div>
                 {choice.content}
+                {choice.count}
             </div>
         {/each}
     </div>
