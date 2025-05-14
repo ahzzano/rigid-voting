@@ -1,9 +1,10 @@
 <script lang="ts">
-    import type { PageData, PageProps } from "../$types";
+    import type { Poll } from "$lib/db/schema";
+    import type { PageProps } from "../$types";
 
     let { data }: PageProps = $props();
 
-    let polls = data.polls;
+    let { polls } = data;
 </script>
 
 <a href="/app/user">User Settings</a>

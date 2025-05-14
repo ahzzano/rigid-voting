@@ -37,8 +37,7 @@
 
 {#each data.questions as question}
     <div>
-        {question.question}
-        {question.id}
+        {question.text}
         <form method="POST" action="?/add_choice" use:enhance>
             <input readonly hidden name="questionId" value={question.id} />
             <input class="input" name="choice" placeholder="new choice" />

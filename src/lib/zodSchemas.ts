@@ -10,5 +10,6 @@ export const QuestionSchema = z.object({
 })
 
 export const ChoiceSchema = z.object({
-    content: z.string().nonempty({ message: "No Empty Choice" })
+    content: z.string().nonempty({ message: "No Empty Choice" }),
+    question: z.number()
 })

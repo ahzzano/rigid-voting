@@ -45,7 +45,6 @@ export async function getPoll(pollId: number, userId: number): Promise<Poll> {
             });
         }
         if (row.choices) {
-            console.log(questionsMap.get(row.id))
             questionsMap.get(row.id)?.choices.push({
                 id: row.choices.id,
                 content: row.choices.content,
