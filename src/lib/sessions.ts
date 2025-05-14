@@ -1,5 +1,5 @@
 import { type Session, sessions } from "./db/schema";
-import { db } from "./db/database";
+import { db } from "$lib/db";
 
 import { sha256 } from "@oslojs/crypto/sha2";
 import { encodeBase32LowerCase, encodeHexLowerCase } from "@oslojs/encoding";

@@ -1,4 +1,4 @@
-import { db } from "$lib/db/database";
+import { db } from "$lib/db";
 import { polls } from "$lib/db/schema";
 import { readUserData } from "$lib/userData";
 import { fail, redirect, type Actions } from "@sveltejs/kit";

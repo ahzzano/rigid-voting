@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { db } from "./db/database";
+import { db } from "$lib/db";
 import { userInfos } from "./db/schema";
 
 export async function getUserInfo(userId: number) {

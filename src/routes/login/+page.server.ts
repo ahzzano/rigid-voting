@@ -1,4 +1,4 @@
-import { db } from "$lib/db/database";
+import { db } from "$lib/db";
 import { sessions, users } from "$lib/db/schema";
 import { createSession, generateSessionToken, setSessionToken, validateSessionToken } from "$lib/sessions";
 import { setUserData } from "$lib/userData";

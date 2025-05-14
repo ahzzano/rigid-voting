@@ -1,4 +1,4 @@
-import { db } from "$lib/db/database";
+import { db } from "$lib/db";
 import { userInfos, type User } from "$lib/db/schema";
 import { readUserData } from "$lib/userData";
 import { getUserInfo } from "$lib/users";
