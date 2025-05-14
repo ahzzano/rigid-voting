@@ -55,7 +55,11 @@ export const questions = pgTable('questions', {
 })
 
 export const choices = pgTable('choices', {
-
+    id: serial('id').primaryKey(),
+    question: serial('question_id')
+        .references(() => questions.id),
+    content: text('content').notNull(),
+    count: integer().default(0)
 })
 
 export type Question = InferSelectModel<typeof questions>
@@ -63,3 +67,4 @@ export type User = InferSelectModel<typeof users>;
 export type Session = InferSelectModel<typeof sessions>
 export type Poll = InferSelectModel<typeof polls>
 export type UserInfo = InferSelectModel<typeof userInfos>
+export type Choice = InferSelectModel<typeof choices>
