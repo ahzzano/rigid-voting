@@ -23,5 +23,4 @@ export async function removeUserData(cookies: Cookies) {
         sameSite: "lax",
         path: "/"
     })
-
 }

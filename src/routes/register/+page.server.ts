@@ -35,6 +35,6 @@ export const actions = {
             console.log(user)
             console.log(e)
         }
-        return { success: true }
+        return redirect(302, '/login')
     }
 } satisfies Actions

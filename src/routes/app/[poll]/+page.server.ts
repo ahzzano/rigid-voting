@@ -1,11 +1,11 @@
 import { db } from "$lib/db"
-import { choices, polls, questions, questions } from "$lib/db/schema"
+import { choices, polls, questions } from "$lib/db/schema"
 import { readUserData } from "$lib/userData"
 import { fail, redirect, type Actions } from "@sveltejs/kit"
-import { PgInteger } from "drizzle-orm/pg-core"
 import { and, eq } from "drizzle-orm/pg-core/expressions"
+import type { PageServerLoad } from "./$types"
 
-export async function load({ params, cookies }) {
+export const load: PageServerLoad = async ({ params, cookies }) => {
     const { poll } = params
     const userData = readUserData(cookies)
     if (userData == null) {

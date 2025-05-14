@@ -1,9 +1,14 @@
 import { invalidateSession } from "$lib/sessions"
 import { removeUserData } from "$lib/userData"
 import { redirect } from "@sveltejs/kit"
+import type { RequestEvent } from "../$types"
 
-export async function GET({ cookies }) {
-    invalidateSession(cookies.get("sessionToken"))
+export async function GET({ cookies }: RequestEvent) {
+    const token = cookies.get("sessionToken")
+    if (!token) {
+        redirect(302, '/')
+    }
+    invalidateSession(token)
 
     cookies.set("sessionToken", "", {
         httpOnly: true,

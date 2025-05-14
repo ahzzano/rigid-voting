@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { PageProps } from "../$types";
+    import type { PageData, PageProps } from "../$types";
 
     let { data }: PageProps = $props();
 
@@ -18,7 +18,6 @@
     </form>
 </div>
 
-<!-- TODO: Add Poll Button Links -->
 <div class="flex flex-col">
     {#each polls as poll}
         <a href="/app/{poll.id}">
