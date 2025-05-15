@@ -1,12 +1,12 @@
 // src/routes/protected/+layout.server.js
 import { redirect } from '@sveltejs/kit';
+import type { LayoutServerLoad } from './$types';
 
-export function load({ cookies, route }) {
+export const load: LayoutServerLoad = async ({ cookies }) => {
     try {
         const token = cookies.get("sessionToken")
         if (token == undefined) {
             redirect(303, '/login')
-
         }
     }
     catch (e) {

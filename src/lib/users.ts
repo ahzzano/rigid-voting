@@ -1,9 +1,9 @@
 import { eq } from "drizzle-orm";
 import { db } from "$lib/db";
-import { userInfos } from "./db/schema";
+import { userInfos, type UserInfo } from "./db/schema";
 
-export async function getUserInfo(userId: number) {
-    const res = await db.select({ userInfo: userInfos })
+export async function getUserInfo(userId: number): Promise<UserInfo | null> {
+    const res = await db.select()
         .from(userInfos)
         .where(eq(userInfos.userId, userId))
 
@@ -11,5 +11,6 @@ export async function getUserInfo(userId: number) {
         return null
     }
 
-    return res[0].userInfo
+    return res[0]
 }
+
