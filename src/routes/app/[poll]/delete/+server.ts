@@ -4,7 +4,7 @@ import { getLoginInfo } from "$lib/userData";
 import { redirect, type RequestHandler } from "@sveltejs/kit";
 import { eq } from "drizzle-orm/pg-core/expressions";
 
-export const POST: RequestHandler = async ({ cookies, params, request }) => {
+export const DELETE: RequestHandler = async ({ cookies, params, request }) => {
     await getLoginInfo(cookies)
 
     const currentPoll = Number(params.poll)

@@ -6,7 +6,7 @@
     const deletePoll = async () => {
         const link = `/app/${data.id}/delete`;
         await fetch(link, {
-            method: "POST",
+            method: "DELETE",
         });
     };
 </script>
