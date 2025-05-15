@@ -1,6 +1,6 @@
 import { db } from "$lib/db"
 import { choices, questions } from "$lib/db/schema"
-import { readUserData } from "$lib/userData"
+import { getLoginInfo } from "$lib/userData"
 import { fail, redirect, type Actions } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types"
 import { getPoll } from "$lib/services/questions"
@@ -8,22 +8,16 @@ import { ChoiceSchema, QuestionSchema } from "$lib/zodSchemas"
 
 export const load: PageServerLoad = async ({ params, cookies }) => {
     const { poll } = params
-    const userData = readUserData(cookies)
-    if (userData == null) {
-        throw fail(404)
-    }
+    const userData = await getLoginInfo(cookies)
 
     return await getPoll(Number(poll), userData.id)
 }
 
 export const actions = {
     add_question: async ({ request, cookies, params }) => {
-        const { poll } = params
-        const userData = readUserData(cookies)
-        if (userData == null) {
-            throw fail(404)
-        }
+        await getLoginInfo(cookies)
 
+        const { poll } = params
         if (!poll) {
             throw fail(404)
         }
@@ -38,7 +32,7 @@ export const actions = {
         const sanitizedData = QuestionSchema.safeParse(questionData)
 
         if (!sanitizedData.success) {
-            throw fail(404)
+            throw fail(400, { issues: sanitizedData.error })
         }
 
         await db.insert(questions).values(questionData)
@@ -48,11 +42,7 @@ export const actions = {
 
     add_choice: async ({ request, cookies, params }) => {
         const { poll } = params
-        const userData = readUserData(cookies)
-        if (userData == null) {
-            throw fail(404)
-        }
-
+        await getLoginInfo(cookies)
         const formData = await request.formData()
 
         const choiceData = {
