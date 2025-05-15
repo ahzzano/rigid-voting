@@ -1,4 +1,4 @@
-import { db } from "$lib/db/database";
+import { db } from "$lib/db";
 import { users } from "$lib/db/schema";
 import { UserSchema } from "$lib/zodSchemas";
 import { sha256 } from "@oslojs/crypto/sha2";
@@ -35,6 +35,6 @@ export const actions = {
             console.log(user)
             console.log(e)
         }
-        return { success: true }
+        return redirect(302, '/login')
     }
 } satisfies Actions

@@ -1,27 +1,20 @@
-import { db } from "$lib/db/database";
-import { userInfos, type User } from "$lib/db/schema";
-import { readUserData } from "$lib/userData";
+import { db } from "$lib/db";
+import { userInfos } from "$lib/db/schema";
+import { getLoginInfo, readUserData } from "$lib/userData";
 import { getUserInfo } from "$lib/users";
 import type { Actions } from "@sveltejs/kit";
 import { eq } from "drizzle-orm/pg-core/expressions";
+import type { PageServerLoad } from "./$types";
 
-export async function load({ cookies }) {
-    const userData: User = readUserData(cookies)
-    console.log(userData)
-    if (!userData) {
-        return null
-    }
+export const load: PageServerLoad = async ({ cookies }) => {
+    const userData = await getLoginInfo(cookies)
 
     const userInfo = await getUserInfo(userData.id)
-    if (userInfo == null) {
-        return { userInfo: null, user: userData }
-    }
-
     return { userInfo: userInfo, user: userData }
 }
 
 export const actions = {
-    delete: async ({ request, cookies }) => {
+    delete: async ({ cookies }) => {
         const user = readUserData(cookies)
         if (user == null) {
             return null

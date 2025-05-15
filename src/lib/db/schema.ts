@@ -33,7 +33,7 @@ export const polls = pgTable('polls', {
     id: serial('poll_id')
         .primaryKey(),
     owner: serial('owner_id')
-        .references(() => users.id)
+        .references(() => users.id, { onDelete: 'cascade' })
         .notNull(),
     pollname: text('poll_name').notNull(),
     open: boolean('open')
@@ -48,23 +48,29 @@ export const polls = pgTable('polls', {
 export const questions = pgTable('questions', {
     id: serial('id').primaryKey(),
     poll: serial('poll_id')
-        .references(() => polls.id)
+        .references(() => polls.id, { onDelete: 'cascade' })
         .notNull(),
-    question: text('question_text'),
+    text: text('question_text'),
     order: integer('order').notNull().default(0)
 })
 
 export const choices = pgTable('choices', {
     id: serial('id').primaryKey(),
     question: serial('question_id')
-        .references(() => questions.id),
+        .references(() => questions.id, { onDelete: 'cascade' }),
     content: text('content').notNull(),
     count: integer().default(0)
 })
 
-export type Question = InferSelectModel<typeof questions>
+export type Question = InferSelectModel<typeof questions> & {
+    choices: Choice[]
+}
 export type User = InferSelectModel<typeof users>;
 export type Session = InferSelectModel<typeof sessions>
-export type Poll = InferSelectModel<typeof polls>
+
+export type Poll = InferSelectModel<typeof polls> & {
+    questions: Question[]
+}
+
 export type UserInfo = InferSelectModel<typeof userInfos>
 export type Choice = InferSelectModel<typeof choices>

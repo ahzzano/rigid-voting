@@ -1,14 +1,14 @@
-import { db } from "$lib/db/database";
+import { db } from "$lib/db";
 import { sessions, users } from "$lib/db/schema";
 import { createSession, generateSessionToken, setSessionToken, validateSessionToken } from "$lib/sessions";
 import { setUserData } from "$lib/userData";
-import { UserSchema } from "$lib/zodSchemas";
 import { sha256 } from "@oslojs/crypto/sha2";
 import { encodeHexLowerCase } from "@oslojs/encoding";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import { eq, and } from "drizzle-orm/pg-core/expressions";
+import type { PageServerLoad } from "./$types";
 
-export const load = async ({ cookies }) => {
+export const load: PageServerLoad = async ({ cookies }) => {
     const token = cookies.get("sessionToken")
     if (token == undefined) {
         return

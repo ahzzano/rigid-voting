@@ -1,9 +1,10 @@
 <script lang="ts">
+    import type { Poll } from "$lib/db/schema";
     import type { PageProps } from "../$types";
 
     let { data }: PageProps = $props();
 
-    let polls = data.polls;
+    let { polls } = data;
 </script>
 
 <a href="/app/user">User Settings</a>
@@ -18,7 +19,6 @@
     </form>
 </div>
 
-<!-- TODO: Add Poll Button Links -->
 <div class="flex flex-col">
     {#each polls as poll}
         <a href="/app/{poll.id}">

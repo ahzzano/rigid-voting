@@ -1,26 +1,14 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
-    import type { PageData } from "../$types";
 
-    const {
-        data,
-    }: {
-        data: {
-            pollname: string;
-            open: boolean;
-            questions: {
-                id: number;
-                poll: number;
-                question: string;
-                order: number;
-                choices: {
-                    content: string;
-                    count: number;
-                }[];
-            }[];
-        };
-    } = $props();
-    console.log(data);
+    const { data } = $props();
+
+    const deletePoll = async () => {
+        const link = `/app/${data.id}/delete`;
+        await fetch(link, {
+            method: "DELETE",
+        });
+    };
 </script>
 
 <div>
@@ -35,22 +23,27 @@
     Question <input class="input" name="question" />
     <button>Add</button>
 </form>
+<button onclick={deletePoll}> Delete Poll </button>
+<br />
 
 {#each data.questions as question}
     <div>
-        {question.question}
-        {question.id}
+        <span>
+            {question.text}
+        </span>
         <form method="POST" action="?/add_choice" use:enhance>
             <input readonly hidden name="questionId" value={question.id} />
             <input class="input" name="choice" placeholder="new choice" />
             <button class="btn">Add</button>
         </form>
 
-        {#each question.choices as choice}
-            <div>
-                {choice.content}
-                {choice.count}
-            </div>
-        {/each}
+        <div>
+            {#each question.choices as choice}
+                <div>
+                    {choice.content}
+                    {choice.count}
+                </div>
+            {/each}
+        </div>
     </div>
 {/each}

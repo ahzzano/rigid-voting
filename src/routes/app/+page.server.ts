@@ -1,10 +1,11 @@
-import { db } from "$lib/db/database";
+import { db } from "$lib/db";
 import { polls } from "$lib/db/schema";
 import { readUserData } from "$lib/userData";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import { eq } from "drizzle-orm/pg-core/expressions";
+import type { PageServerLoad } from "./$types";
 
-export async function load({ cookies }) {
+export const load: PageServerLoad = async ({ cookies }) => {
     const userData = readUserData(cookies)
 
     if (!userData) {
