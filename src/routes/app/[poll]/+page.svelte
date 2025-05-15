@@ -1,24 +1,9 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
+    import type { Poll } from "$lib/db/schema";
 
-    const {
-        data,
-    }: {
-        data: {
-            pollname: string;
-            open: boolean;
-            questions: {
-                id: number;
-                poll: number;
-                question: string;
-                order: number;
-                choices: {
-                    content: string;
-                    count: number;
-                }[];
-            }[];
-        };
-    } = $props();
+    const { data } = $props();
+
     console.log(data);
 </script>
 
@@ -34,10 +19,20 @@
     Question <input class="input" name="question" />
     <button>Add</button>
 </form>
+<button
+    onclick={async () => {
+        await fetch(`/app/${data.id}/delete`, {
+            method: "POST",
+        });
+    }}
+>
+    Delete Poll
+</button>
+<br />
 
 {#each data.questions as question}
     <div>
-        {question.text}
+        {question.question}
         <form method="POST" action="?/add_choice" use:enhance>
             <input readonly hidden name="questionId" value={question.id} />
             <input class="input" name="choice" placeholder="new choice" />
